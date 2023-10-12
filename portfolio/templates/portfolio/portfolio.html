@@ -1,0 +1,58 @@
+{% extends "core/base.html" %}
+
+{% block title %}Portfolio{% endblock %}
+
+{% block background %}{% load static %}{% static 'core/img/binario.jpg' %}{% endblock %}
+
+{% block headers %}
+<h1>Portfolio</h1>
+<span class="subheading">Trabajos y creaciones</span>
+{% endblock %}
+
+
+{% block content %} 
+	{% for project in projects %}
+		<!-- Proyecto -->
+		<div class="row project">  	
+			<div class="col-lg-3 col-md-4 offset-lg-1">
+				<!-- Carrusel de imágenes para cada proyecto -->
+				<div id="carousel{{project.id}}" class="carousel slide" data-ride="carousel" data-interval="3000">
+					<div class="carousel-inner">
+						{% for image in project.images.all %}
+						<div class="carousel-item {% if forloop.first %}active{% endif %}">
+							<!-- Enlace directo a la imagen -->
+							<a href="{{image.image.url}}" data-lightbox="project{{project.id}}">
+								<img class="img-fluid" src="{{image.image.url}}" alt="{{image.description}}">
+							</a>
+							<!-- Enlaces ocultos para las otras imágenes del mismo proyecto -->
+							{% if not forloop.first %}
+								<a href="{{image.image.url}}" data-lightbox="project{{project.id}}" class="d-none"></a>
+							{% endif %}
+						</div>
+						{% endfor %}
+					</div>
+					<!-- Flechas de control -->
+					<a class="carousel-control-prev" href="#carousel{{project.id}}" role="button" data-slide="prev">
+						<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+						<span class="sr-only">Anterior</span>
+					</a>
+					<a class="carousel-control-next" href="#carousel{{project.id}}" role="button" data-slide="next">
+						<span class="carousel-control-next-icon" aria-hidden="true"></span>
+						<span class="sr-only">Siguiente</span>
+					</a>
+				</div>
+			</div>
+			<div class="col-lg-7 col-md-8">
+				<h2 class="section-heading title">{{project.title}}</h2>   
+				<p>{{project.description}}</p>
+				{% if project.link %}
+					<p><a href="{{project.link}}">Más información</a></p>
+				{% endif %}
+			</div>
+		</div>
+	{% endfor %}
+{% endblock %}
+
+
+
+
